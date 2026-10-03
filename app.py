@@ -712,6 +712,41 @@ def scroll_page_to_top():
     )
 
 # =========================================================
+# ADMIN RESPONSE DOWNLOAD
+# =========================================================
+
+if st.query_params.get("admin") == "responses":
+
+    st.title("Survey Response Administration")
+
+    admin_password = st.text_input(
+        "Admin Password",
+        type="password"
+    )
+
+    if admin_password == st.secrets["admin_password"]:
+
+        if os.path.exists(RESPONSE_FILE):
+
+            with open(RESPONSE_FILE, "rb") as excel_file:
+
+                st.download_button(
+                    label="Download Survey Responses",
+                    data=excel_file,
+                    file_name="survey_responses.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    width="stretch"
+                )
+
+        else:
+            st.warning("No response file currently exists on the cloud server.")
+
+    elif admin_password:
+        st.error("Incorrect password.")
+
+    st.stop()
+
+# =========================================================
 # CSS
 # =========================================================
 st.markdown("""
